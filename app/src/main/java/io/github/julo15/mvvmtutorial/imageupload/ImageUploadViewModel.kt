@@ -3,12 +3,17 @@ package io.github.julo15.mvvmtutorial.imageupload
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 class ImageUploadViewModel : ViewModel() {
     private val _uris = MutableLiveData<List<Uri>>(emptyList())
     val uris: LiveData<List<Uri>>
         get() = _uris
+
+
+    val isUploadButtonEnabled: LiveData<Boolean> =
+        Transformations.map(uris) { urisValue -> urisValue.isNotEmpty() }
 
     fun onUriAdded(uri: Uri) {
         _uris.value?.toMutableList()?.let { newUriList ->

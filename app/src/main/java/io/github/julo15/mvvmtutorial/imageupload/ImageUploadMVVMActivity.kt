@@ -31,6 +31,7 @@ class ImageUploadMVVMActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         observeUris()
+        observeUploadButtonEnabled()
     }
 
     private fun initializeAddImageButton() {
@@ -53,6 +54,12 @@ class ImageUploadMVVMActivity : AppCompatActivity() {
     private fun observeUris() {
         imageUploadViewModel.uris.observe(this, Observer { uris ->
             imageAdapter.updateUris(uris)
+        })
+    }
+
+    private fun observeUploadButtonEnabled() {
+        imageUploadViewModel.isUploadButtonEnabled.observe(this, Observer { isEnabled ->
+            binding.submitButton.isEnabled = isEnabled
         })
     }
 }

@@ -12,6 +12,7 @@ class ImageUploadActivity : AppCompatActivity() {
     private val imageAdapterListener = object : ImageAdapter.Listener {
         override fun onDelete(uri: Uri) {
             urisToUpload.remove(uri)
+            syncUploadButtonEnabled()
             imageAdapter.updateUris(urisToUpload)
         }
     }
@@ -24,6 +25,7 @@ class ImageUploadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityImageUploadBinding.inflate(layoutInflater)
+        syncUploadButtonEnabled() // make sure it starts disabled
         initializeAddImageButton()
         initializeImageRecyclerView()
 
@@ -49,6 +51,11 @@ class ImageUploadActivity : AppCompatActivity() {
 
     private fun addUri(uri: Uri) {
         urisToUpload.add(uri)
+        syncUploadButtonEnabled()
         imageAdapter.updateUris(urisToUpload)
+    }
+
+    private fun syncUploadButtonEnabled() {
+        binding.submitButton.isEnabled = urisToUpload.isNotEmpty()
     }
 }
