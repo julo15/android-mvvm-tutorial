@@ -6,7 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.github.julo15.mvvmtutorial.databinding.ItemImageBinding
 
-class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
+class ImageAdapter(private val listener: Listener) : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
+    interface Listener {
+        fun onDelete(uri: Uri)
+    }
+
     private var uris: List<Uri>? = null
 
     fun updateUris(updatedUris: List<Uri>) {
@@ -14,11 +18,14 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class ImageViewHolder(parent: ViewGroup, private val binding: ItemImageBinding =
+    inner class ImageViewHolder(parent: ViewGroup, private val binding: ItemImageBinding =
         ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         : RecyclerView.ViewHolder(binding.root) {
         fun bind(uri: Uri) {
             binding.uriTextView.text = uri.toString()
+            binding.deleteButton.setOnClickListener {
+                listener.onDelete(uri)
+            }
         }
     }
 

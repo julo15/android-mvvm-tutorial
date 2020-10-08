@@ -1,5 +1,6 @@
 package io.github.julo15.mvvmtutorial.imageupload
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +10,14 @@ import io.github.julo15.mvvmtutorial.databinding.ActivityImageUploadBinding
 
 class ImageUploadMVVMActivity : AppCompatActivity() {
     private lateinit var binding: ActivityImageUploadBinding
-    private val imageAdapter = ImageAdapter()
+
+    private val imageAdapterListener = object : ImageAdapter.Listener {
+        override fun onDelete(uri: Uri) {
+            imageUploadViewModel.onUriRemoved(uri)
+        }
+    }
+
+    private val imageAdapter = ImageAdapter(imageAdapterListener)
 
     private val imageUploadViewModel: ImageUploadViewModel by viewModels()
 
@@ -29,7 +37,7 @@ class ImageUploadMVVMActivity : AppCompatActivity() {
         binding.addImageButton.setOnClickListener {
             showPickerDialog(this) { uri ->
                 uri?.let { uriToAdd ->
-                    imageUploadViewModel.onUriAdded(uri)
+                    imageUploadViewModel.onUriAdded(uriToAdd)
                 }
             }
         }

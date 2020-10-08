@@ -8,7 +8,15 @@ import io.github.julo15.mvvmtutorial.databinding.ActivityImageUploadBinding
 
 class ImageUploadActivity : AppCompatActivity() {
     private lateinit var binding: ActivityImageUploadBinding
-    private val imageAdapter = ImageAdapter()
+
+    private val imageAdapterListener = object : ImageAdapter.Listener {
+        override fun onDelete(uri: Uri) {
+            urisToUpload.remove(uri)
+            imageAdapter.updateUris(urisToUpload)
+        }
+    }
+
+    private val imageAdapter: ImageAdapter = ImageAdapter(imageAdapterListener)
 
     private val urisToUpload = mutableListOf<Uri>()
 

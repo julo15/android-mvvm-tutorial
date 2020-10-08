@@ -18,6 +18,12 @@ class ImageUploadViewModel : ViewModel() {
             // Push the new uri list into the LiveData
             _uris.value = newUriList
         }
+    }
 
+    fun onUriRemoved(uri: Uri) {
+        _uris.value?.filter { it != uri }?.let { newUriList ->
+            // Push the new uri list into the LiveData
+            _uris.value = newUriList
+        }
     }
 }
